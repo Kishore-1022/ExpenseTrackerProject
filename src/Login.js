@@ -1,14 +1,44 @@
 
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const email=useRef()
   const password=useRef() 
+  const navigate=useNavigate()
   const [isLogin, setIsLogin] = useState(true);
 
   const handleFormToggle = () => {
     setIsLogin(!isLogin);
   };
+
+const handleForgotPassword = async () => {
+    try {
+      const endpoint = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs';
+  
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email.current.value,
+          requestType: 'PASSWORD_RESET',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        console.log('Password reset email sent successfully');
+      } else {
+        const errorData = await response.json();
+        console.error('Error sending password reset email:', errorData.error.message);
+      }
+    } catch (error) {
+      console.error('Error sending password reset email:', error.message);
+     
+    }
+   };
+  
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +68,7 @@ const Login = () => {
     } catch (error) {
       console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, error.message);
     }
+    navigate('/welcome')
     e.target.reset();
     
   };
@@ -65,6 +96,11 @@ const Login = () => {
         </label>
         <br />
         <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        <p>
+        <button type="button" onClick={handleForgotPassword}>
+          Forgot Password?
+        </button>
+      </p>
       </form>
 
       <p>
@@ -73,6 +109,7 @@ const Login = () => {
           {isLogin ? 'Register here' : 'Login here'}
         </button>
       </p>
+      
     </div>
   );
 };
