@@ -71,3 +71,13 @@ button.toggle-btn:hover {
     font-size: 14px; /* Adjust font size for smaller screens */
   }
 }
+
+.top{
+  border-bottom: 0.5px solid black;
+  padding: 0.5rem;
+}
+.color{
+  background-color: lightpink;
+  padding: 0.2rem;
+  border-radius: 10px;
+}

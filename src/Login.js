@@ -1,8 +1,10 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from './Contextapi';
 
 const Login = () => {
+  const ctx=useContext(api)
   const email=useRef()
   const password=useRef() 
   const navigate=useNavigate()
@@ -26,12 +28,12 @@ const handleForgotPassword = async () => {
           'Content-Type': 'application/json',
         },
       });
-  
+      const data = await response.json();
       if (response.ok) {
         console.log('Password reset email sent successfully');
-      } else {
-        const errorData = await response.json();
-        console.error('Error sending password reset email:', errorData.error.message);
+       
+      } else {  
+        console.error('Error sending password reset email:', data.error.message);
       }
     } catch (error) {
       console.error('Error sending password reset email:', error.message);
@@ -58,15 +60,16 @@ const handleForgotPassword = async () => {
         },
         
       });
-
+      const data = await response.json();
       if (response.ok) {
         console.log(isLogin ? 'Login successful' : 'Account registered successfully');
+        ctx.login(data.idToken)
       } else {
-        const errorData = await response.json();
-        console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, errorData.message);
+       
+        console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, data.message);
       }
     } catch (error) {
-      console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, error.message);
+      console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, error);
     }
     navigate('/welcome')
     e.target.reset();
