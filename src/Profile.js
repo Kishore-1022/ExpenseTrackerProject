@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useEffect} from 'react'
 import { Nav , Button, Form} from 'react-bootstrap'
 import api from './Contextapi'
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,31 @@ const Profile = () => {
     const url=useRef();
     const ctx = useContext(api);
     const navi=useNavigate();
+   
+    const getDetails=async()=>{
+         try{ 
+          const res = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              idToken:  ctx.token,
+            }),
+          })
+          const data= await res.json();
+          if(data.users[0].displayName){
+            name.current.value=data.users[0].displayName
+            url.current.value=data.users[0].photoUrl
+          }
+         }catch(err){
+          console.log(err.message)
+        };
+    }
+    useEffect(()=>{
+      getDetails();
+    },[]);
+  
    
    
     
