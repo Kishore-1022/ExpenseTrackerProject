@@ -81,3 +81,11 @@ button.toggle-btn:hover {
   padding: 0.2rem;
   border-radius: 10px;
 }
+.button-right{
+  background-color: lightgray;
+  padding: 0.2rem;
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-weight: 600;
+}
