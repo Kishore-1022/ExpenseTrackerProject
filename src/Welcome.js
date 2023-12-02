@@ -19,18 +19,39 @@ const Welcome = () => {
       for (let i in data){
         const key=i;
         obj.push({...data[i],key})
+
       }
+      
       setExp(obj)
       }catch(err){
         console.log(err.message)
       }
-      console.log(exp)
-      
     }
-
+    const removeHandler=async(id)=>{
+     
+      
+      const res = await fetch(`https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense/${id}.json`,{
+        method:'DELETE'
+      })
+    }
+    const editHandler=async(e,id)=>{
+      e.preventDefault() 
+      try{
+        const res = await fetch(`https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense/${id}.json`)
+        const data = await res.json();
+        moneySpent.current.value = data.moneySpent;
+        description.current.value = data.description;
+        expenseCategory.current.value = data.expenseCategory;
+        removeHandler(id)
+       
+      }catch(err){
+        console.log(err.message)
+      }    
+     
+    }
     useEffect(()=>{
       fetchHandler()
-    },[])
+    },[removeHandler])
 
     const submitHandler=async(e)=>{
       e.preventDefault();
@@ -53,6 +74,7 @@ const Welcome = () => {
     e.target.reset()
 
     }
+    
 
     return (
         <div className="welcome-container ">
@@ -91,6 +113,10 @@ const Welcome = () => {
                   <p className="me-3">{i.expenseCategory}</p>
                   <p className="me-3">{i.description}</p>
                   <p>{i.moneySpent}</p>
+                  <p><Button size='sm btn-success' onClick={(e)=>editHandler(e,i.key)}>Edit</Button></p>
+                  <p><Button size='sm btn-danger' onClick={(e)=>removeHandler(i.key)}>Delete</Button></p>
+                  
+                  
                 </ListGroup.Item> 
               ))}
       
