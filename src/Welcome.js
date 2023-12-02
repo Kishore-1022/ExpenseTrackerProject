@@ -1,11 +1,58 @@
-import React, { useRef } from 'react';
-import { Nav, Form } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Nav, Form, Button, ListGroup } from 'react-bootstrap';
 
 const Welcome = () => {
     const moneySpent = useRef();
     const description = useRef();
     const expenseCategory = useRef();
+    const [exp,setExp]=useState([])
+    const url='https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense.json'
     const expenseCategories = ["Food", "Petrol", "Salary", "Rent", "Other"];
+  
+
+    const fetchHandler=async()=>{
+      try{
+        const res=await fetch(url)
+        const data=await res.json()
+     
+      let obj=[]
+      for (let i in data){
+        const key=i;
+        obj.push({...data[i],key})
+      }
+      setExp(obj)
+      }catch(err){
+        console.log(err.message)
+      }
+      console.log(exp)
+      
+    }
+
+    useEffect(()=>{
+      fetchHandler()
+    },[])
+
+    const submitHandler=async(e)=>{
+      e.preventDefault();
+      const expenseData = {
+        moneySpent: moneySpent.current.value,
+        description: description.current.value,
+        expenseCategory: expenseCategory.current.value
+      };
+      try {
+        const res=await fetch(url,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(expenseData)
+       });
+     }catch(err){
+       console.log(err.message)
+    }
+    e.target.reset()
+
+    }
 
     return (
         <div className="welcome-container ">
@@ -17,7 +64,7 @@ const Welcome = () => {
                 </div>
             </div>
 
-            <Form className="welcome-form d-flex">
+            <Form className="welcome-form d-flex" onSubmit={submitHandler}>
                 <Form.Group className="mb-3">
                     <Form.Label>Money Spent:</Form.Label>
                     <Form.Control type="number" placeholder="Enter amount" ref={moneySpent} />
@@ -36,7 +83,20 @@ const Welcome = () => {
                         ))}
                     </Form.Control>
                 </Form.Group>
+                <Button type="submit" >Add</Button>
             </Form>
+            <ListGroup as="ol"  >
+              {exp.map(i=>(
+                <ListGroup.Item  className="d-flex justify-content-between" as="li" key={i.key}>
+                  <p className="me-3">{i.expenseCategory}</p>
+                  <p className="me-3">{i.description}</p>
+                  <p>{i.moneySpent}</p>
+                </ListGroup.Item> 
+              ))}
+      
+     
+            </ListGroup>
+
         </div>
     );
 };
