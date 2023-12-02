@@ -3,13 +3,17 @@ import Login from "./Login";
 import Headers from "./Headers";
 import Welcome from "./Welcome";
 import Profile from './Profile';
+import { useContext } from 'react';
+import api from './Contextapi';
 
 function App() {
+  const ctx = useContext(api);
+  console.log(ctx.token)
  
   return (
  
       <>
-        <Headers/>
+        {ctx.token && <Headers/>}
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path='/welcome' element={<Welcome/>}/>
