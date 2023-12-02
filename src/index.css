@@ -89,3 +89,32 @@ button.toggle-btn:hover {
   margin-right: 10px;
   font-weight: 600;
 }
+
+/* Welcome.css */
+
+.welcome-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.top {
+  margin-bottom: 20px;
+}
+
+.welcome-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .welcome-container {
+      padding: 10px;
+  }
+
+  .welcome-form {
+      padding: 15px;
+  }
+}
