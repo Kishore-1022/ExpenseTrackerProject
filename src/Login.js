@@ -15,6 +15,10 @@ const Login = () => {
   };
 
 const handleForgotPassword = async () => {
+  if(!email.current.value){
+    alert('Please enter registered email!')
+  }else{
+    alert('Reset link has been sent to your registered Email')
     try {
       const endpoint = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs';
   
@@ -40,12 +44,12 @@ const handleForgotPassword = async () => {
      
     }
    };
+  }
+    
   
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-   
-
     try {
       const endpoint = isLogin ? 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs' : 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs';
 
@@ -97,22 +101,16 @@ const handleForgotPassword = async () => {
             required
           />
         </label>
-        <br />
-        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
-        <p>
-        <button type="button" onClick={handleForgotPassword}>
+        <button type="button" className='btn btn-light text-primary'  onClick={handleForgotPassword}>
           Forgot Password?
         </button>
-      </p>
+        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        
       </form>
-
-      <p>
         {isLogin ? "Don't have an account? " : "Already have an account? "}
-        <button type="button" onClick={handleFormToggle}>
+        <button type="button"  className='btn btn-light text-primary' onClick={handleFormToggle}>
           {isLogin ? 'Register here' : 'Login here'}
         </button>
-      </p>
-      
     </div>
   );
 };
