@@ -3,17 +3,20 @@ import Login from "./Login";
 import Headers from "./Headers";
 import Welcome from "./Welcome";
 import Profile from './Profile';
-import { useContext } from 'react';
-import api from './Contextapi';
+import {  useSelector } from "react-redux";
+
+
+
 
 function App() {
-  const ctx = useContext(api);
-  console.log(ctx.token)
+  const token=useSelector(state=>state.auth.token)
+
+  console.log(token)
  
   return (
  
       <>
-        {ctx.token && <Headers/>}
+        {token && <Headers/>}
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path='/welcome' element={<Welcome/>}/>

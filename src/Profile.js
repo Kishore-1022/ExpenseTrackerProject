@@ -1,12 +1,12 @@
-import React, { useContext, useRef, useEffect} from 'react'
+import React, {useRef, useEffect} from 'react'
 import { Nav , Button, Form} from 'react-bootstrap'
-import api from './Contextapi'
+import {  useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const name =useRef();
     const url=useRef();
-    const ctx = useContext(api);
+    const token=useSelector(state=>state.auth.token)
     const navi=useNavigate();
    
     const getDetails=async()=>{
@@ -17,7 +17,7 @@ const Profile = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              idToken:  ctx.token,
+              idToken:  token,
             }),
           })
           const data= await res.json();
@@ -43,7 +43,7 @@ const Profile = () => {
         },
         body: JSON.stringify({
             requestType: 'VERIFY_EMAIL',
-            idToken: ctx.token,
+            idToken: token,
         })
     });
     }catch(err){
@@ -53,10 +53,6 @@ const Profile = () => {
   }
 
 
-  
-   
-   
-    
     const sumbitHandler= async(e)=>{
         e.preventDefault();
         const api="https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDW06_RxkmqCUsLd7-gYF9mGl0bDsIaHLs"
@@ -67,14 +63,14 @@ const Profile = () => {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  idToken: ctx.token,
+                  idToken: token,
                   displayName: name.current.value,
                   photoUrl: url.current.value,
                   returnSecureToken: true,
                 }),
               });  
              const data=await res.json()
-             console.log(data)    
+                
         }catch(err){
             console.log(err)
         }

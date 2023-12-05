@@ -33,11 +33,13 @@ const Welcome = () => {
       const res = await fetch(`https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense/${id}.json`,{
         method:'DELETE'
       })
+      alert('Expense Successfuly deleted')
     }
     const editHandler=async(e,id)=>{
       e.preventDefault() 
       try{
         const res = await fetch(`https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense/${id}.json`)
+
         const data = await res.json();
         moneySpent.current.value = data.moneySpent;
         description.current.value = data.description;

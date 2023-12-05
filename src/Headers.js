@@ -1,15 +1,15 @@
 import React from 'react'
 import {Nav, Button} from "react-bootstrap"
-import api from './Contextapi';
-import { useContext } from 'react';
+import { authActions } from './Contextapi';
+import { useDispatch} from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 
 const Headers = () => {
-  const ctx = useContext(api);
+  const dispatch = useDispatch();
   const navigate=useNavigate()
   const logoutHandler=()=>{
-    ctx.logout()
+    dispatch(authActions.logout())
     navigate('/')
 
   }

@@ -1,31 +1,25 @@
-import React from "react"
-import { useState } from "react";
-const api=React.createContext({
-    token:'',
-    login:(token)=>{},
-    logout:()=>{}
-    
+import {createSlice} from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+
+const auth=createSlice({
+    name:'auth',
+    initialState: {token: localStorage.getItem("token") || null},
+    reducers:{
+        login:(state,action)=>{
+            console.log(action.payload)
+            state.token=action.payload
+            localStorage.setItem("token", action.payload);
+        },
+        logout: (state) => {
+            state.token = null;
+            localStorage.removeItem("token");
+          },
+    }
 })
-export const ContextApi=(props)=>{
-    const initialValue=localStorage.getItem('token');
-    const [token,setToken]=useState(initialValue)
-    const loginHandler=(token)=>{
-        setToken(token)
-        localStorage.setItem('token', token);    
-     }
-    const logoutHandler=()=>{
-        setToken(null)
-        localStorage.removeItem('token');
-     }
-     const contextValue={
-        token:token,
-        login:loginHandler,
-        logout:logoutHandler
-     }
-     return (
-        <api.Provider value={contextValue}>
-            {props.children }
-        </api.Provider>
-     )
-}
-export default api
+const store = configureStore({
+    reducer: {
+      auth: auth.reducer,
+    },
+  });
+export const authActions=auth.actions;
+export default store;

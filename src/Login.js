@@ -1,10 +1,10 @@
-
-import React, { useState, useRef, useContext } from 'react';
+import { authActions } from './Contextapi';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from './Contextapi';
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-  const ctx=useContext(api)
+  const dispatch = useDispatch();
   const email=useRef()
   const password=useRef() 
   const navigate=useNavigate()
@@ -40,8 +40,7 @@ const handleForgotPassword = async () => {
         console.error('Error sending password reset email:', data.error.message);
       }
     } catch (error) {
-      console.error('Error sending password reset email:', error.message);
-     
+      console.error('Error sending password reset email:', error.message); 
     }
    };
   }
@@ -65,17 +64,21 @@ const handleForgotPassword = async () => {
         
       });
       const data = await response.json();
+    
       if (response.ok) {
         console.log(isLogin ? 'Login successful' : 'Account registered successfully');
-        ctx.login(data.idToken)
+        dispatch(authActions.login(data.idToken))
+        navigate('/welcome')
       } else {
        
         console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, data.message);
+        alert(data.error.message)
       }
     } catch (error) {
       console.error(`Error ${isLogin ? 'logging in' : 'registering account'}:`, error);
+     
     }
-    navigate('/welcome')
+    
     e.target.reset();
     
   };
