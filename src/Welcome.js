@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Nav, Form, Button, ListGroup } from 'react-bootstrap';
+import { Nav, Form, Button, ListGroup ,Badge} from 'react-bootstrap';
 
 const Welcome = () => {
     const moneySpent = useRef();
     const description = useRef();
     const expenseCategory = useRef();
     const [exp,setExp]=useState([])
+
     const url='https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense.json'
     const expenseCategories = ["Food", "Petrol", "Salary", "Rent", "Other"];
   
@@ -19,17 +20,13 @@ const Welcome = () => {
       for (let i in data){
         const key=i;
         obj.push({...data[i],key})
-
-      }
-      
+      }  
       setExp(obj)
       }catch(err){
         console.log(err.message)
       }
     }
     const removeHandler=async(id)=>{
-     
-      
       const res = await fetch(`https://expensetracker-ded49-default-rtdb.asia-southeast1.firebasedatabase.app/expense/${id}.json`,{
         method:'DELETE'
       })
@@ -108,13 +105,14 @@ const Welcome = () => {
                     </Form.Control>
                 </Form.Group>
                 <Button type="submit" >Add</Button>
+                
             </Form>
             <ListGroup as="ol"  >
               {exp.map(i=>(
                 <ListGroup.Item  className="d-flex justify-content-between" as="li" key={i.key}>
                   <p className="me-3">{i.expenseCategory}</p>
                   <p className="me-3">{i.description}</p>
-                  <p>{i.moneySpent}</p>
+                  {i.moneySpent> 10000? <><p>{i.moneySpent}</p><p><Button size='sm gold' >premium</Button></p></>:<p>{i.moneySpent}</p>}
                   <p><Button size='sm btn-success' onClick={(e)=>editHandler(e,i.key)}>Edit</Button></p>
                   <p><Button size='sm btn-danger' onClick={(e)=>removeHandler(i.key)}>Delete</Button></p>
                   

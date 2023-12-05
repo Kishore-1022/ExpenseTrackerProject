@@ -118,3 +118,8 @@ button.toggle-btn:hover {
       padding: 15px;
   }
 }
+.gold{
+  background-color: goldenrod;
+  border: 1px solid goldenrod;
+  
+}
