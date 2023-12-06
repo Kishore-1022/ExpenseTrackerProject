@@ -121,5 +121,15 @@ button.toggle-btn:hover {
 .gold{
   background-color: goldenrod;
   border: 1px solid goldenrod;
-  
 }
+/* theme */
+.light-theme {
+  /* Add your light theme styles here */
+}
+
+.dark-theme {
+  /* Add your dark theme styles here */
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+

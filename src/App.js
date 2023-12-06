@@ -3,7 +3,7 @@ import Login from "./Login";
 import Headers from "./Headers";
 import Welcome from "./Welcome";
 import Profile from './Profile';
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 
@@ -11,7 +11,7 @@ import {  useSelector } from "react-redux";
 function App() {
   const token=useSelector(state=>state.auth.token)
 
-  console.log(token)
+
  
   return (
  

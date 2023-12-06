@@ -3,17 +3,19 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const auth=createSlice({
     name:'auth',
-    initialState: {token: localStorage.getItem("token") || null},
+    initialState: {token: localStorage.getItem("token") || null,theme:false},
     reducers:{
-        login:(state,action)=>{
-            
+        login:(state,action)=>{    
             state.token=action.payload
             localStorage.setItem("token", action.payload);
         },
         logout: (state) => {
             state.token = null;
             localStorage.removeItem("token");
-          },
+        },
+        toggle:(state)=>{
+          state.theme=!state.theme
+        }
     }
 })
 const store = configureStore({
